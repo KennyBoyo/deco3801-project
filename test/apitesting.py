@@ -12,6 +12,6 @@ output = openai.Completion.create(
     temperature=0.1
 )
 
-#print(type(output["choices"][0]))
+print(type(output["choices"][0]))
 print("Output:", output["choices"][0]["text"])
 print("Total Tokens:", output["usage"]["total_tokens"])
