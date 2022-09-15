@@ -1,0 +1,31 @@
+brainstorming
+- continually update is inefficient
+    - update each time a page is called? 
+        - if a user tries to access a page, have the wiki search for text that matches the existing page title database
+        - pattern recognition algorithms
+        - exclude common words (a, is, who etc) that arent topics (verbs will probs need to stay since they can be topics, e.g. swimming)
+
+inputbox -> creation or redirect to existing page
+
+creation:
+    create new page
+    call gpt3 ai and generate wiki_text
+    hyperlink(wiki_text)
+    return page
+
+redirect:
+    hyperlink(wiki_text)
+    return page
+
+hyperlink(wiki_text):
+    # will need to keep a running collection of currently hyperlinked topics in the article to prevent double hyperlinking (any instances after the first
+    # should not have a hyperlink)
+
+    clone = wiki_text.clone()
+        for w in wiki_text.enumerate:
+            if w is not already a hyperlink AND w not in article.hyperlinked #list:
+                if w in TITLE_DATABASE:
+                    # append the article to the list of topics/words already hyperlinked in the article
+                    article.hyperlinked.append(w)
+                    replace w.index in clone with the hyperlink code
+    post update clone to replace wiki_text with the new article with hyperlinks
