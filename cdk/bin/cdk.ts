@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { CdkStack } from '../lib/cdk-stack';
 import { WebStack } from '../lib/web-stack';
 import { StackProps } from 'aws-cdk-lib';
 import { WebDeployStack } from '../lib/web-deploy-stack';
