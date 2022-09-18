@@ -19,6 +19,11 @@
     "inlineSources": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"],
+      "cdk/*": ["cdk/*"]
+    },
     "typeRoots": [
       "./node_modules/@types"
     ]

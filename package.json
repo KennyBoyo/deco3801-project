@@ -21,9 +21,10 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "aws-cdk-lib": "2.40.0",
+    "all": "^0.0.0",
+    "aws-cdk-lib": "^2.40.0",
     "cdk-ecr-deployment": "^2.5.6",
-    "constructs": "^10.0.0",
+    "constructs": "^10.1.95",
     "eslint": "^8.23.0",
     "prettier": "^2.7.1",
     "source-map-support": "^0.5.21"
