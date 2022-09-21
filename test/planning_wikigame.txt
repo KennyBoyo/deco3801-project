@@ -1,0 +1,16 @@
+wiki game planning
+
+generate topics:
+# need to decide how topics are generated: will it be from preexisting articles, new topics or a mixture of both?
+# preexisting: potentially limited selection to begin with, will need a substatial user base to create unique games
+# new topics: poses a new problem of making up topics (maybe we could use gpt3?)
+# mixture: could be ideal, saves resources generating new topics each time by including existing topics already
+
+the site itself:
+# home screen with start game button
+#   - maybe have a button for just browsing the wiki?
+#   - needs a timer persistent across articles while within a game
+#   - needs a counter for articles passed through
+#   - leaderboard ? hard to quantify when people get different topics
+#        - multiplayer aspect may be complicated to implement
+#        - could be done by having the same pair of topics for a given day/time frame? so leaderboard per topic pair
