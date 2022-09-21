@@ -112,6 +112,7 @@ async function editRequest(csrf_token, userInput) {
       return;
     }
     console.log(body);
+    window.location.href = `${userInput.replace(/ /g, "_")}`;
   });
 }
 
@@ -36109,7 +36110,7 @@ module.exports = function GetIntrinsic(name, allowMissing) {
 		throw new $TypeError('"allowMissing" argument must be a boolean');
 	}
 
-	if ($exec(/^%?[^%]*%?$/g, name) === null) {
+	if ($exec(/^%?[^%]*%?$/, name) === null) {
 		throw new $SyntaxError('`%` may not be present anywhere but at the beginning and end of the intrinsic name');
 	}
 	var parts = stringToPath(name);
@@ -39705,12 +39706,20 @@ var toStr = Object.prototype.toString;
 var fnClass = '[object Function]';
 var genClass = '[object GeneratorFunction]';
 var hasToStringTag = typeof Symbol === 'function' && !!Symbol.toStringTag; // better: use `has-tostringtag`
-/* globals document: false */
-var documentDotAll = typeof document === 'object' && typeof document.all === 'undefined' && document.all !== undefined ? document.all : {};
+var isDDA = typeof document === 'object' ? function isDocumentDotAll(value) {
+	/* globals document: false */
+	// in IE 8, typeof document.all is "object"
+	if (typeof value === 'undefined' || typeof value === 'object') {
+		try {
+			return value('') === null;
+		} catch (e) { /**/ }
+	}
+	return false;
+} : function () { return false; };
 
 module.exports = reflectApply
 	? function isCallable(value) {
-		if (value === documentDotAll) { return true; }
+		if (isDDA(value)) { return true; }
 		if (!value) { return false; }
 		if (typeof value !== 'function' && typeof value !== 'object') { return false; }
 		if (typeof value === 'function' && !value.prototype) { return true; }
@@ -39722,14 +39731,14 @@ module.exports = reflectApply
 		return !isES6ClassFn(value);
 	}
 	: function isCallable(value) {
-		if (value === documentDotAll) { return true; }
+		if (isDDA(value)) { return true; }
 		if (!value) { return false; }
 		if (typeof value !== 'function' && typeof value !== 'object') { return false; }
 		if (typeof value === 'function' && !value.prototype) { return true; }
 		if (hasToStringTag) { return tryFunctionObject(value); }
 		if (isES6ClassFn(value)) { return false; }
 		var strClass = toStr.call(value);
-		return strClass === fnClass || strClass === genClass;
+		return strClass === fnClass || strClass === genClass || tryFunctionObject(value);
 	};
 
 },{}],280:[function(require,module,exports){

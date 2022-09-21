@@ -111,5 +111,6 @@ async function editRequest(csrf_token, userInput) {
       return;
     }
     console.log(body);
+    window.location.href = `${userInput.replace(/ /g, "_")}`;
   });
 }
