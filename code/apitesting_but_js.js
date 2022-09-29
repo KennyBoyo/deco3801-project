@@ -10,7 +10,7 @@ const text_generation = async () => {
 // model
     const response = await openai.createCompletion({
     model: "text-davinci-002",
-    prompt: "Write a wikipedia article about apples.",
+    prompt: "Write an article about the history of apples.",
     max_tokens: 1000,
     temperature: 0.1,
     });
@@ -56,7 +56,7 @@ function getLoginToken() {
 function loginRequest(login_token) {
     var params_1 = {
         action: "login",
-        lgname: "Erkshent@bruh",
+        lgname: "Erkshen@bruh",
         lgpassword: "qinjqhiehsn9oi2554obl1or72cgnqca",
         lgtoken: login_token,
         format: "json"
