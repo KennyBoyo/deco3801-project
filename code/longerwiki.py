@@ -23,18 +23,20 @@ Society - group of individuals involved in persistent social interaction, or a l
 Technology - the sum of techniques, skills, methods, and processes used in the production of goods or services or in the accomplishment of objectives, such as scientific investigation.
 """
 
-TOPIC = "3Scan"
+TOPIC = "education"
 
 output_subtopics = openai.Completion.create(
     model="text-davinci-002",
-    prompt="List 5 key subtopics of " + TOPIC + ", such as the history of " + TOPIC + " and the etymology of " + TOPIC,
+    prompt="Q: What are 2 key subtopics of \"science\"?\nA: \"History\", \"Etymology\"\n\nQ: What are 3 key subtopics of \"The Battle of Newtonia\"?\nA: \"Background\", \"Prelude\", \"Aftermath\"\n\nQ: What are 2 key subtopics of \"Elise Reiman\"?\nA: \"Early life\", \"Career\"\n\nQ: What are 5 key subtopics of \"Astrology\"?\nA: \"History\", \"Principles and practice\", \"Theological viewpoints\", \"Scientific analysis and criticism\", \"Cultural impact\"\n\nQ: What are 5 key subtopics of \"cows\"?\nA: \"Taxonomy\", \"Etymology\", \"Anatomy\", \"Behaviour\", \"Economy\"\n\nQ: What are 5 key subtopics of \"Elon Musk\"?\nA: \"Early life\", \"Career\", \"Wealth\", \"Personal Life\", \"Recognition\"\n\nQ: What are 5 key subtopics of \"University of Queensland\"?\nA: \"History\", \"Campuses\", \"Faculties and schools\", \"Student life\", \"Notable alumni and faculty\"\n\nQ: What are 5 key subtopics of \"" + TOPIC + "\"?",
     max_tokens=1000,
     temperature=0.1
 )
+# note: etymology is not always applicable; e.g. people/proper nouns
 
 subtopics = output_subtopics["choices"][0]["text"]
-subtopics_list = subtopics.split("\n-")
-subtopics_list = subtopics_list[1:]
+print(subtopics)
+subtopics_list = subtopics.split(", ")
+subtopics_list[0] = subtopics_list[0][4:]
 print(subtopics_list)
 
 wikitext = openai.Completion.create(
@@ -47,11 +49,11 @@ wikitext = openai.Completion.create(
 for i in subtopics_list:
     output = openai.Completion.create(
         model="text-davinci-002",
-        prompt="Write a wikipedia article with multiple paragraphs about " + i,
+        prompt="Write a wikipedia article about " + i[1:-1] + " in relation to " + TOPIC,
         max_tokens=1000,
         temperature=0.1,
         presence_penalty=1
     )
-    wikitext += '\n\n' + i + output["choices"][0]["text"]
+    wikitext += '\n\n' + i[1:-1] + output["choices"][0]["text"]
 
 print(wikitext)
