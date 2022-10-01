@@ -23,7 +23,7 @@ Society - group of individuals involved in persistent social interaction, or a l
 Technology - the sum of techniques, skills, methods, and processes used in the production of goods or services or in the accomplishment of objectives, such as scientific investigation.
 """
 
-TOPIC = "education"
+TOPIC = "Alexander Hamilton"
 
 output_subtopics = openai.Completion.create(
     model="text-davinci-002",
