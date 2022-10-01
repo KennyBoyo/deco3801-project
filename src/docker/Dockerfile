@@ -6,7 +6,7 @@
 # RUN yarn install --production
 # CMD ["node", "src/index.js"]
 
-FROM alpine
+FROM bitnami/mediawiki:latest
 
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8

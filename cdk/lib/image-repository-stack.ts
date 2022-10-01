@@ -1,7 +1,5 @@
-import { aws_ecs_patterns, CfnOutput, Duration, Stack, StackProps } from 'aws-cdk-lib';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { Repository } from "aws-cdk-lib/aws-ecr";
-import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
-import { DockerImageName, ECRDeployment } from 'cdk-ecr-deployment'
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import { Construct } from "constructs";
 
