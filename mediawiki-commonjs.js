@@ -9,22 +9,44 @@ var openai = new OpenAIApi(configuration);
 var request = require("request").defaults({ jar: true });
 var url = "https://127.0.0.1/mediawiki/api.php";
 
-// Create input text box
-var inputBox = document.createElement("input");
-inputBox.setAttribute("type", "text");
-inputBox.id = "userInput";
-document.body.appendChild(inputBox);
+// Game is on main page
+if ($("#firstHeading")[0].innerHTML == "Main Page") {
+  // Create input text box
+  var inputBox = document.createElement("input");
+  inputBox.setAttribute("type", "text");
+  $(inputBox).on("keydown", function (e) {
+    if (e.keyCode == 13) generateArticle(); // Generate on 'enter'
+  });
+  inputBox.id = "userInput";
+  document.body.appendChild(inputBox);
 
-// Create button to submit user input to GPT-3 and create page
-var genBtn = document.createElement("button");
-genBtn.innerHTML = "Generate article";
-genBtn.addEventListener("click", generateArticle);
-document.body.appendChild(genBtn);
+  // Create button to submit user input to GPT-3 and create page
+  var genBtn = document.createElement("button");
+  genBtn.innerHTML = "Generate article";
+  genBtn.addEventListener("click", generateArticle);
+  document.body.appendChild(genBtn);
+
+  // Embedded article title
+  var articleTitle = document.createElement("h2");
+  articleTitle.innerHTML = "Wiki Game";
+  $("#bodyContentOuter").append(articleTitle);
+
+  // Embedded article content
+  var article = document.createElement("article");
+  article.innerHTML = "Please generate an article.";
+  $("#bodyContentOuter").append(article);
+}
 
 // Button click event handler
 function generateArticle() {
   var userInput = $("#userInput").val();
+  articleTitle.innerHTML = "Loading...";
+  article.innerHTML = "Loading...";
   getLoginToken(userInput);
+}
+
+function isInputEmpty(input) {
+  return !input || input === "";
 }
 
 // GPT-3
@@ -104,6 +126,7 @@ async function editRequest(csrf_token, userInput) {
     text: await textGeneration(userInput),
     token: csrf_token,
     format: "json",
+    origin: "*",
   };
 
   request.post({ url: url, form: params_3 }, function (error, res, body) {
@@ -111,6 +134,9 @@ async function editRequest(csrf_token, userInput) {
       return;
     }
     console.log(body);
-    window.location.href = `${userInput.replace(/ /g, "_")}`;
+
+    // Embed article
+    articleTitle.innerHTML = userInput;
+    article.innerHTML = params_3.text.trim().replace(/\n/g, "<br>");
   });
 }
