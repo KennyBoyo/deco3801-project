@@ -54,12 +54,41 @@ async function textGeneration(userInput) {
   // model
   const response = await openai.createCompletion({
     model: "text-davinci-002",
-    prompt: `Write a wikipedia article about ${userInput}.`,
+    prompt: `Q: What are 2 key subtopics of \"science\"?\nA: \"History\", \"Etymology\"\n\nQ: What are 3 key subtopics of \"The Battle of Newtonia\"?\nA: \"Background\", \"Prelude\", \"Aftermath\"\n\nQ: What are 2 key subtopics of \"Elise Reiman\"?\nA: \"Early life\", \"Career\"\n\nQ: What are 5 key subtopics of \"Astrology\"?\nA: \"History\", \"Principles and practice\", \"Theological viewpoints\", \"Scientific analysis and criticism\", \"Cultural impact\"\n\nQ: What are 5 key subtopics of \"cows\"?\nA: \"Taxonomy\", \"Etymology\", \"Anatomy\", \"Behaviour\", \"Economy\"\n\nQ: What are 5 key subtopics of \"Elon Musk\"?\nA: \"Early life\", \"Career\", \"Wealth\", \"Personal Life\", \"Recognition\"\n\nQ: What are 5 key subtopics of \"University of Queensland\"?\nA: \"History\", \"Campuses\", \"Faculties and schools\", \"Student life\", \"Notable alumni and faculty\"\n\nQ: What are 5 key subtopics of \"${userInput}\"?.`,
     max_tokens: 1000,
     temperature: 0.1,
   });
 
-  return response.data.choices[0].text;
+  // split into subtopics in a list
+  let subtopics = response.data.choices[0].text;
+  let subtopics_list = subtopics.split(", ");
+  subtopics_list[0] = subtopics_list[0].substring(5);
+
+  // compile the wiki article based on the subtopics
+  let wikitext = (
+    await openai.createCompletion({
+      model: "text-davinci-002",
+      prompt: `Write a brief overview about ${userInput}`,
+      max_tokens: 1000,
+      temperature: 0.1,
+    })
+  ).data.choices[0].text;
+
+  for (let sub of subtopics_list) {
+    let output = await openai.createCompletion({
+      model: "text-davinci-002",
+      prompt: `Write a wikipedia article about ${sub.slice(1, -1)} in relation to ${userInput}`,
+      max_tokens: 1000,
+      temperature: 0.1,
+      presence_penalty: 1,
+    });
+    wikitext += `\n\n${sub.slice(1, -1)}\n${output.data.choices[0].text}`;
+  }
+
+  console.log(subtopics_list);
+  console.log(wikitext);
+
+  return wikitext;
 }
 
 // Step 1: GET request to fetch login token
