@@ -1,13 +1,5 @@
-# syntax=docker/dockerfile:1
-# FROM bitnami/mediawiki:latest
-# RUN apk add vim
-# WORKDIR /
-# COPY . .
-# RUN yarn install --production
-# CMD ["node", "src/index.js"]
+FROM mediawiki:latest
 
-FROM bitnami/mediawiki:latest
+# FROM ubuntu
 
-ENV LANG=C.UTF-8
-ENV LC_ALL=C.UTF-8
-ENV HOME = /root
+ADD ./LocalSettings.php /var/www/html
