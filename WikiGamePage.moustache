@@ -1,0 +1,59 @@
+
+<div class="row">
+<div class="col col-20"><div class="azl_box {{{scheme|}}}" style="margin-top:{{{marginTop|0px}}}; {{#if:{{{scheme|}}}|| border-color:{{{border|#aaa}}}; }}">
+  <div class="azl_box_body" style="color:{{{text|#000}}}; {{#if:{{{scheme|}}}|| background:{{{body|#eee}}};}} {{#if: {{{forceHeight|}}} | height:{{{forceHeight|}}}; overflow:hidden; |}} border-radius:5px;">
+{{{content|<div style="height:100px; line-height:100px; text-align:center;"><em>Welcome to the Wiki Game!</em></div>}}}
+</div>
+<div class="col col-8"><p></p>
+</div>
+</div>
+</div> 
+
+<div style="width:100%">
+Different schemed boxes{{ContentBoxSimple
+| scheme = pink
+| marginTop = 10px
+| content = <div style="padding:0px 10px"><pre>The Wiki Game is a hyper-textual game based off of Wikipedia. 
+The aim of this project is to explore the limits of GPT3, developed by OpenAI, as a text generation system through the creation of a Wikipedia-like website with articles generated using GPT3, based on user prompts. This wiki will attempt to be an encyclopedia of the world, as understood by GPT3, and allows users to comment on the accuracy of the content through discussion sections on the wiki.
+
+Besides using GPT3 model through OpenAI to achieve wiki articles generation, the website also encompasses a game which is similar to wiki game. At the beginning of the game, one start topic and one goal topic will be given. The objective of the game is to start searching keywords inside the start topic's wiki, and search until players reach the goal topic's page.
+</pre></div>
+}}
+</div>
+
+
+<div class="row" style="width: 100%">
+
+<div class="col col-6" style="width:49%; float:left; height:400px;">
+{{ContentBoxSimple
+|scheme = pink
+|content = 
+<div class="row" style="padding:5px 10px">
+<div class="col col-6" style="width:49%; float:left;">
+<pre>Starting Image</pre></div>
+
+<div class="col col-6" style="width:49%; float:right;">
+{{HomeIconItem
+|image=Chisato.png
+|link=google.com
+}}
+<div class="col col-6" style="width:49%; float:left; padding:0px 0px;">
+<pre>Starting Button</pre></div>
+</div></div>}}</div>
+
+<div class="col col-6" style="width:49%; float:right; height:200px;">
+{{ContentBoxSimple
+|scheme = blue
+|content = 
+<div class="row" style="padding:0px 10px">
+<div class="col col-6" style="width:49%; float:left;">
+<pre>Ending Image</pre></div>
+
+<div class="col col-6" style="width:49%; float:right;">
+{{HomeIconItem
+|image=Chisato.png
+|link=google.com
+}}
+</div>}}</div>
+
+</div>
