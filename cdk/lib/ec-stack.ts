@@ -9,6 +9,7 @@ import { DockerImageName, ECRDeployment } from 'cdk-ecr-deployment';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { ApplicationLoadBalancedFargateService } from 'aws-cdk-lib/aws-ecs-patterns';
 import { readFileSync } from 'fs';
+import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 type ECStackProps = {
     inputs: {
@@ -26,14 +27,14 @@ export class ECStack extends Stack {
     constructor(scope: Construct, id: string, props: ECStackProps) {
         super(scope, id, props);
     
-        const repositoryName = StringParameter.valueForStringParameter(
-            this,
-            props.inputs.ecrNameRef
-        )
-        const repositoryArn = StringParameter.valueForStringParameter(
-            this,
-            props.inputs.ecrArnRef
-        )
+        // const repositoryName = StringParameter.valueForStringParameter(
+        //     this,
+        //     props.inputs.ecrNameRef
+        // )
+        // const repositoryArn = StringParameter.valueForStringParameter(
+        //     this,
+        //     props.inputs.ecrArnRef
+        // )
 
          // 👇 create VPC in which we'll launch the Instance
         const vpc = new Vpc(this, 'mediawiki-vpc', {
@@ -44,25 +45,24 @@ export class ECStack extends Stack {
             ],
         });
 
-        // Get ECR instance and upload image
-        const ecrRepository = Repository.fromRepositoryAttributes(
-            this,
-            'MediawikiECRRepository',
-            {
-                repositoryName,
-                repositoryArn,
-            },
-        )
+        // // Get ECR instance and upload image
+        // const ecrRepository = Repository.fromRepositoryAttributes(
+        //     this,
+        //     'MediawikiECRRepository',
+        //     {
+        //         repositoryName,
+        //         repositoryArn,
+        //     },
+        // )
 
-        const dockerImageAsset = new DockerImageAsset( this, 'MediawikiDockerImageAsset', {
-            directory: props.inputs.dockerImageFilePath,
-            // file: './Dockerfile',
-        })
+        // const dockerImageAsset = new DockerImageAsset( this, 'MediawikiDockerImageAsset', {
+        //     directory: props.inputs.dockerImageFilePath,
+        // })
 
-        new ECRDeployment(this, 'DeployMediawikiDockerImage', {
-            src: new DockerImageName(dockerImageAsset.imageUri),
-            dest: new DockerImageName(ecrRepository.repositoryUri),
-        })
+        // new ECRDeployment(this, 'DeployMediawikiDockerImage', {
+        //     src: new DockerImageName(dockerImageAsset.imageUri),
+        //     dest: new DockerImageName(ecrRepository.repositoryUri),
+        // })
     
         // 👇 create Security Group for the Instance
         const webserverSG = new SecurityGroup(this, 'mediawiki-sg', {
@@ -88,6 +88,12 @@ export class ECStack extends Stack {
             'allow HTTPS traffic from anywhere',
         );
 
+        const role = new Role(this, 'mediawiki-instance-role', {
+            assumedBy: new ServicePrincipal('ec2.amazonaws.com')
+        });
+
+        role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'))
+
         const ec2Instance = new Instance(this, 'mediawiki-instance', {
             vpc,
             vpcSubnets: {
@@ -102,6 +108,7 @@ export class ECStack extends Stack {
             generation: AmazonLinuxGeneration.AMAZON_LINUX_2,
             }),
             keyName: 'mediawiki',
+            role,
         });
 
         // 👇 load contents of script

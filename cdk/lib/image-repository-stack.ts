@@ -1,6 +1,8 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
-import { Repository } from "aws-cdk-lib/aws-ecr";
+import { CfnPublicRepository, Repository } from "aws-cdk-lib/aws-ecr";
+import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
+import { DockerImageName, ECRDeployment } from 'cdk-ecr-deployment';
 import { Construct } from "constructs";
 
 export type ImageRepositoryStackProps = {
@@ -26,6 +28,15 @@ export class ImageRepositoryStack extends Stack {
                 imageScanOnPush: true,
             }
         )
+
+        const dockerImageAsset = new DockerImageAsset( this, 'MediawikiDockerImageAsset', {
+            directory: props.inputs.dockerImageFilePath,
+        })
+
+        new ECRDeployment(this, 'DeployMediawikiDockerImage', {
+            src: new DockerImageName(dockerImageAsset.imageUri),
+            dest: new DockerImageName(imageRepository.repositoryUri),
+        })
 
         // DO I NEED TO ADD IAM PERMISSIONS?
 

@@ -29,7 +29,7 @@ $wgSitename = "AIExpressed";
 $wgScriptPath = "";
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = "http://ec2-54-234-68-95.compute-1.amazonaws.com";
+$wgServer = "http://ec2-54-84-195-193.compute-1.amazonaws.com";
 
 ## The URL path to static resources (images, scripts, etc.)
 $wgResourceBasePath = $wgScriptPath;
