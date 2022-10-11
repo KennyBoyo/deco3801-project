@@ -18,7 +18,7 @@ cp ./src/scripts/php.ini /etc/php/7.4/fpm/php.ini
 sudo systemctl restart php7.4-fpm.service
 
 # Configure MariaDB
-sudo apt-get install mariadb-server-10.6 mariadb-server-core-10.6 -y
+sudo apt-get install mariadb-server-10.3 mariadb-server-core-10.3 -y
 
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
