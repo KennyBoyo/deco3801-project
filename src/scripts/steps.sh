@@ -18,7 +18,7 @@ cp ./src/scripts/php.ini /etc/php/7.4/fpm/php.ini
 sudo systemctl restart php7.4-fpm.service
 
 # Configure MariaDB
-sudo apt-get install mariadb-server-10.6 mariadb-server-core-10.6
+sudo apt-get install mariadb-server-10.6 mariadb-server-core-10.6 -y
 
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
@@ -36,7 +36,7 @@ sudo nginx -t
 sudo systemctl restart nginx
 
 # Install and configure Mediawiki
-wget -O mediawiki.tar.gz https://releases.wikimedia.org/mediawiki/1.38/mediawiki-1.38.4.tar.gz
+sudo wget -O mediawiki.tar.gz https://releases.wikimedia.org/mediawiki/1.38/mediawiki-1.38.4.tar.gz
 sudo tar -zxvf mediawiki.tar.gz
 sudo mkdir -p /var/www/html/mediawiki
 sudo mv mediawiki*/* /var/www/html/mediawiki
