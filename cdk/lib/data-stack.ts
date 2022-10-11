@@ -83,12 +83,12 @@ export class DataStack extends Stack {
           version: MysqlEngineVersion.VER_8_0_28
         }),
         instanceType: InstanceType.of(
-          // ec2.InstanceClass.BURSTABLE3,
-          // InstanceSize.MICRO,
-          InstanceClass.T2,
+          InstanceClass.BURSTABLE3,
           InstanceSize.MICRO,
+          // InstanceClass.T2,
+          // InstanceSize.MICRO,
         ),
-        credentials: Credentials.fromGeneratedSecret('postgres'),
+        credentials: Credentials.fromGeneratedSecret('mediawiki'),
         multiAz: false,
         allocatedStorage: 100,
         maxAllocatedStorage: 105,
@@ -99,7 +99,7 @@ export class DataStack extends Stack {
         removalPolicy: RemovalPolicy.DESTROY,
         deletionProtection: false,
         databaseName: 'todosdb',
-        publiclyAccessible: false,
+        publiclyAccessible: true,
       });
 
       dbInstance.connections.allowFrom(ec2Instance, Port.tcp(5432));

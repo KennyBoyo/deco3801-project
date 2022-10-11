@@ -101,7 +101,7 @@ export class ECStack extends Stack {
             },
             securityGroup: webserverSG,
             instanceType: InstanceType.of(
-            InstanceClass.T2,
+            InstanceClass.T3A,
             InstanceSize.MICRO,
             ),
             machineImage: new AmazonLinuxImage({

@@ -1,0 +1,33 @@
+server {
+    listen 80;
+    listen [::]:80;
+    root /var/www/html/mediawiki;
+    index  index.php index.html index.htm;
+    # server_name  ec2-44-211-47-215.compute-1.amazonaws.com;
+
+    location ~ \.ht {
+                deny all;
+        }
+
+        location / {
+                try_files $uri $uri/ @rewrite;
+        }
+
+        location @rewrite {
+                rewrite ^/(.*)$ /index.php;
+        }
+
+        location ^~ /maintenance/ {
+                return 403;
+        }
+
+    location ~ [^/]\.php(/|$) {
+    fastcgi_split_path_info  ^(.+?\.php)(|/.*)$;
+    fastcgi_index            index.php;
+    fastcgi_pass             unix:/var/run/php/php7.4-fpm.sock; # for Ubuntu 18.04
+    include                  fastcgi_params;
+    fastcgi_param   PATH_INFO       $fastcgi_path_info;
+    fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    try_files $uri @rewrite;
+    }
+}
