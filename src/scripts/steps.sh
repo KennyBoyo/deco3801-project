@@ -11,7 +11,7 @@ sudo systemctl enable nginx.service
 # Configure PHP
 sudo add-apt-repository ppa:ondrej/php -y
 sudo apt-get install imagemagick php7.4-fpm php7.4-intl php7.4-xml php7.4-curl php7.4-gd php7.4-mbstring php7.4-mysql php7.4-mysql php-apcu php7.4-zip -y
-cp ./src/scripts/php.ini /etc/php/7.4/fpm/php.ini
+sudo cp ./src/scripts/php.ini /etc/php/7.4/fpm/php.ini
 
 # nano /etc/php/7.4/fpm/php.ini
 
