@@ -30,6 +30,7 @@ sudo mysql -e "FLUSH PRIVILEGES"
 # Configure nginx
 sudo cp ./src/scripts/mediawiki /etc/nginx/sites-available
 sudo ln -sf /etc/nginx/sites-available/mediawiki /etc/nginx/sites-enabled/mediawiki
+sudo rm /etc/nginx/sites-enabled/default
 
 sudo nginx -t
 
@@ -41,10 +42,13 @@ sudo tar -zxvf mediawiki.tar.gz
 sudo mkdir -p /var/www/html/mediawiki
 sudo mv mediawiki*/* /var/www/html/mediawiki
 
+sudo chown -R www-data:www-data /var/www/html/
+sudo chmod -R 755 /var/www/html/
 sudo chown -R www-data:www-data /var/www/html/mediawiki
 
 sudo cp ./src/docker/LocalSettings-ubuntu-final.php /var/www/html/mediawiki/LocalSettings.php
 sudo chown www-data:www-data /var/www/html/mediawiki/LocalSettings.php
+sudo systemctl restart nginx
 
 # ln -sf /etc/nginx/sites-available/ec2-44-211-47-215.compute-1.amazonaws.com.conf /etc/nginx/sites-enabled/ec2-44-211-47-215.compute-1.amazonaws.com.conf
 
