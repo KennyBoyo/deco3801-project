@@ -4,7 +4,11 @@ server {
     root /var/www/html/mediawiki;
     index  index.php index.html index.htm;
     add_header Access-Control-Allow-Origin *;
+    add_header Access-Control-Allow-Origin http://aiexressed.xyz;
     add_header Access-Control-Allow-Origin aiexressed.xyz;
+    add_header Access-Control-Allow-Origin http://ec2-3-235-101-167.compute-1.amazonaws.com;
+    add_header Access-Control-Allow-Origin ec2-3-235-101-167.compute-1.amazonaws.com;
+
     server_name  aiexressed.xyz www.aiexpressed.xyz;
 
     location ~ \.ht {
