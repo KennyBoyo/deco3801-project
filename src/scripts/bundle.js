@@ -92845,6 +92845,7 @@ const request = require("request").defaults({ jar: true });
 const wikiBase = "http://ec2-3-235-101-167.compute-1.amazonaws.com";
 const wikiApi = `${wikiBase}/api.php`;
 let currentArticle = "";
+let start, end;
 
 // Game is on main page
 if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
@@ -92858,7 +92859,6 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
   articleTitle = document.getElementById("articleTitle");
   // Embedded article content
   article = document.getElementById("articleBody");
-  let start, end;
   document.getElementById("startGame").addEventListener("click", () => {
     getTwoRandomTopics("gpt3").then((success) => {
       // Actual start and goal topics
