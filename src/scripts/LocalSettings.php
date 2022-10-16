@@ -38,7 +38,20 @@ $wgResourceBasePath = $wgScriptPath;
 
 ## The URL paths to the logo.  Make sure you change this from the default,
 ## or else you'll overwrite your logo when you upgrade!
-$wgLogos = [];
+$wgLogos = [
+        '1x' => "$wgResourceBasePath/logo.png",
+        'wordmark' => [
+                "src" => "$wgResourceBasePath/logo.png",
+                "width" => 119,
+                "height" => 18,
+        ],
+        'tagline' => [
+                "src" => "$wgResourceBasePath/logo.png",
+                "width" => 117,
+                "height" => 13
+        ],
+        'icon' => "$wgResourceBasePath/logo.png",
+];
 
 ## UPO means: this is also a user preference option
 
@@ -133,4 +146,4 @@ wfLoadSkin( 'Vector' );
 # End of automatically generated settings.
 # Add more configuration options below.
 
-
+$wgCrossSiteAJAXdomains = [ '*' ];
