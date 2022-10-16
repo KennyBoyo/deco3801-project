@@ -4,6 +4,7 @@ server {
     root /var/www/html/mediawiki;
     index  index.php index.html index.htm;
     add_header Access-Control-Allow-Origin *;
+    add_header Access-Control-Allow-Origin aiexressed.xyz;
     server_name  aiexressed.xyz www.aiexpressed.xyz;
 
     location ~ \.ht {
