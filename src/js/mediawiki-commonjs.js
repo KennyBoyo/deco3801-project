@@ -151,7 +151,7 @@ async function generateArticle(userInput) {
       )}&srwhat=title&srinfo=&srprop=`
     );
     const responseJSON = await response.json();
-    if (responseJSON.query.search.length) {
+    if (responseJSON.query.search.length == 0) {
       articleTitle.innerHTML = "Loading...";
       article.innerHTML = "Loading...";
       getLoginToken(userInput);
