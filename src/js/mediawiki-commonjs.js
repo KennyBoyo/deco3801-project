@@ -145,17 +145,13 @@ async function generateArticle(userInput) {
   }
   if (userInput) {
     const response = await fetch(
-      `${wikiApi}?action=query&format=json&prop=info&list=search&titles=&inprop=displaytitle&srsearch=${userInput.replace(
-        / /g,
-        "%20"
-      )}&srwhat=title&srinfo=&srprop=`
+      `${wikiApi}?action=query&format=json&prop=info&list=search&titles=&inprop=displaytitle&srsearch=${userInput}&srwhat=title&srinfo=&srprop=`
     );
     const responseJSON = await response.json();
-    if (responseJSON.query.search.length == 0) {
-      articleTitle.innerHTML = "Loading...";
-      article.innerHTML = "Loading...";
-      getLoginToken(userInput);
-    } else {
+    if (
+      responseJSON.query.search.length &&
+      responseJSON.query.search[0].title.toLowerCase() === inputLower
+    ) {
       const bodyResponse = await fetch(
         `${wikiApi}?action=query&format=json&prop=revisions&titles=${responseJSON.query.search[0].title}&formatversion=2&rvprop=content&rvslots=*`
       );
@@ -163,6 +159,10 @@ async function generateArticle(userInput) {
       articleTitle.innerHTML = responseJSON.query.search[0].title;
       article.innerHTML = bodyResponseJSON.query?.pages[0]?.revisions[0]?.slots?.main?.content;
       currentArticle = bodyResponseJSON.query?.pages[0]?.revisions[0]?.slots?.main?.content;
+    } else {
+      articleTitle.innerHTML = "Loading...";
+      article.innerHTML = "Loading...";
+      getLoginToken(userInput);
     }
   }
 }
@@ -335,8 +335,8 @@ async function getTwoRandomTopics(api = "gpt3") {
     const response = await openai.createCompletion({
       model: "text-davinci-002",
       prompt: prompt,
-      max_tokens: 60,
-      temperature: 0.8,
+      max_tokens: 20,
+      temperature: 0.9,
       top_p: 1,
     });
 
