@@ -157,7 +157,7 @@ async function generateArticle(userInput) {
       getLoginToken(userInput);
     } else {
       const bodyResponse = await fetch(
-        `${wikiApi}?action=query&format=json&prop=revisions&titles=${response.query.search[0].title}&formatversion=2&rvprop=content&rvslots=*`
+        `${wikiApi}?action=query&format=json&prop=revisions&titles=${responseJSON.query.search[0].title}&formatversion=2&rvprop=content&rvslots=*`
       );
       const bodyResponseJSON = await bodyResponse.json();
       articleTitle.innerHTML = responseJSON.query.search[0].title;
