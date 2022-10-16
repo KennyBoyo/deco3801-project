@@ -92978,26 +92978,25 @@ async function generateArticle(userInput) {
     timeLeader.innerHTML = `1. ${timerRef.innerHTML}`;
   }
   if (userInput) {
-    const response = (
-      await fetch(
-        `${wikiApi}?action=query&format=json&prop=info&list=search&titles=&inprop=displaytitle&srsearch=${userInput.replace(
-          / /g,
-          "%20"
-        )}&srwhat=title&srinfo=&srprop=`
-      )
-    ).json();
-    if (response.query.search.length) {
+    const response = await fetch(
+      `${wikiApi}?action=query&format=json&prop=info&list=search&titles=&inprop=displaytitle&srsearch=${userInput.replace(
+        / /g,
+        "%20"
+      )}&srwhat=title&srinfo=&srprop=`
+    );
+    const responseJSON = await response.json();
+    if (responseJSON.query.search.length) {
       articleTitle.innerHTML = "Loading...";
       article.innerHTML = "Loading...";
       getLoginToken(userInput);
     } else {
-      const bodyResponse = (
-        await fetch(
-          `${wikiApi}?action=query&format=json&prop=revisions&titles=${response.query.search[0].title}&formatversion=2&rvprop=content&rvslots=*`
-        )
-      ).json();
-      articleTitle.innerHTML = response.query.search[0].title;
-      article.innerHTML = bodyResponse.query?.pages[0]?.revisions[0]?.slots?.main?.content;
+      const bodyResponse = await fetch(
+        `${wikiApi}?action=query&format=json&prop=revisions&titles=${response.query.search[0].title}&formatversion=2&rvprop=content&rvslots=*`
+      );
+      const bodyResponseJSON = await bodyResponse.json();
+      articleTitle.innerHTML = responseJSON.query.search[0].title;
+      article.innerHTML = bodyResponseJSON.query?.pages[0]?.revisions[0]?.slots?.main?.content;
+      currentArticle = bodyResponseJSON.query?.pages[0]?.revisions[0]?.slots?.main?.content;
     }
   }
 }
