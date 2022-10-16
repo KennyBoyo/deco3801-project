@@ -35,12 +35,6 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
       document.querySelector("#startTopic div div div div pre").innerHTML = `Start Topic: ${start}`;
       document.querySelector("#endTopic div div div div pre").innerHTML = `End Topic: ${end}`;
       generateArticle(start);
-
-      // Stopwatch
-      if (int !== null) {
-        clearInterval(int);
-      }
-      int = setInterval(displayTimer, 10);
     });
   });
 
@@ -138,7 +132,7 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
 
 // Generates a wiki article for a given topic.
 // Article appears on Main_Page and on its own page behind the scenes
-function generateArticle(userInput) {
+async function generateArticle(userInput) {
   let [inputLower, endLower] = [userInput.toLowerCase(), end.toLowerCase()];
   let allowedMatches = [inputLower, inputLower.replace(/ *\([^)]*\) */g, "")];
   if (
@@ -150,9 +144,27 @@ function generateArticle(userInput) {
     timeLeader.innerHTML = `1. ${timerRef.innerHTML}`;
   }
   if (userInput) {
-    articleTitle.innerHTML = "Loading...";
-    article.innerHTML = "Loading...";
-    getLoginToken(userInput);
+    const response = (
+      await fetch(
+        `${wikiApi}?action=query&format=json&prop=info&list=search&titles=&inprop=displaytitle&srsearch=${userInput.replace(
+          / /g,
+          "%20"
+        )}&srwhat=title&srinfo=&srprop=`
+      )
+    ).json();
+    if (response.query.search.length) {
+      articleTitle.innerHTML = "Loading...";
+      article.innerHTML = "Loading...";
+      getLoginToken(userInput);
+    } else {
+      const bodyResponse = (
+        await fetch(
+          `${wikiApi}?action=query&format=json&prop=revisions&titles=${response.query.search[0].title}&formatversion=2&rvprop=content&rvslots=*`
+        )
+      ).json();
+      articleTitle.innerHTML = response.query.search[0].title;
+      article.innerHTML = bodyResponse.query?.pages[0]?.revisions[0]?.slots?.main?.content;
+    }
   }
 }
 
@@ -281,6 +293,12 @@ async function editRequest(csrf_token, userInput) {
     // Embed article
     articleTitle.innerHTML = userInput;
     article.innerHTML = currentArticle.trim().replace(/\n/g, "<br>");
+
+    // Start stopwatch
+    if (int !== null) {
+      clearInterval(int);
+    }
+    int = setInterval(displayTimer, 10);
   });
 }
 
