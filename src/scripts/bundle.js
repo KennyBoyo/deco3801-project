@@ -93082,6 +93082,7 @@ var configuration = new Configuration({
 var openai = new OpenAIApi(configuration);
 var request = require("request").defaults({ jar: true });
 var url = "http://aiexpressed.xyz/mediawiki/api.php";
+var url = "http://ec2-3-235-101-167.compute-1.amazonaws.com/mediawiki/api.php";
 
 // Game is on main page
 if ($("#firstHeading")[0].innerHTML == "Main Page") {
