@@ -93,25 +93,11 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
   var start, end;
   var articleTitle, article;
   getTwoRandomTopics("gpt3").then((success) => {
-    // Start and goal topic section
-    var startendTitle = document.createElement("h2");
-    startendTitle.innerHTML = "Start and End Topic";
-    $("#bodyContentOuter").append(startendTitle);
-
     // Actual start and goal topics
     start = success[0], end = success[1];
-    var startPara = document.createElement("p");
-    var endPara = document.createElement("p");
-    startPara.innerHTML = `Start: ${start}`;
-    endPara.innerHTML = `End: ${end}`;
-    $("#bodyContentOuter").append(startPara);
-    $("#bodyContentOuter").append(endPara);
 
     // Start game button
-    var startBtn = document.createElement("button");
-    startBtn.innerHTML = "Start game";
     startBtn.addEventListener("click", () => generateArticle(start));
-    $("#bodyContentOuter").append(startBtn);
 
     // Reset game button
     var resetBtn = document.createElement("button");
