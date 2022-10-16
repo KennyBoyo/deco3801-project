@@ -8,7 +8,7 @@
     });
     var openai = new OpenAIApi(configuration);
     var request = require("request").defaults({ jar: true });
-    var url = "https://127.0.0.1/mediawiki/api.php";
+    var url = "http://aiexpressed.xyz/mediawiki/api.php";
     
     // Game is on main page
     if ($("#firstHeading")[0].innerHTML == "Main Page") {
