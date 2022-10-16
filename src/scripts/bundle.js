@@ -92835,78 +92835,99 @@ function extend() {
 /* Project code */
 
 // Imports
-var { Configuration, OpenAIApi } = require("openai");
-var configuration = new Configuration({
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
   apiKey: "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",
 });
-var openai = new OpenAIApi(configuration);
-var request = require("request").defaults({ jar: true });
+const openai = new OpenAIApi(configuration);
+const request = require("request").defaults({ jar: true });
 
-var wikiBase = "http://ec2-3-235-101-167.compute-1.amazonaws.com";
-var wikiApi = `${wikiBase}/api.php`;
-var currentArticle = "";
+const wikiBase = "http://ec2-3-235-101-167.compute-1.amazonaws.com";
+const wikiApi = `${wikiBase}/api.php`;
+let currentArticle = "";
 
 // Game is on main page
 if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
-
   // Ivan's stopwatch code
-  var milliseconds = 0, seconds = 0, minutes = 0, hours = 0;
-  var int = null;
-  var timerRef = document.querySelector('.timerDisplay');
-  var Number1 = document.querySelector('#no1');
-      
-  document.getElementById('startTimer').addEventListener('click', function () {
-      if (int !== null) {
-          clearInterval(int);
-      }
-      int = setInterval(displayTimer, 10);
+  let [milliseconds, seconds, minutes, hours] = [0, 0, 0, 0];
+  let int = null;
+  let timerRef = document.querySelector(".timerDisplay");
+  let Number1 = document.querySelector("#no1");
+
+  // Embedded article title
+  articleTitle = document.getElementById("articleTitle");
+  // Embedded article content
+  article = document.getElementById("articleBody");
+  let start, end;
+  document.getElementById("startGame").addEventListener("click", () => {
+    getTwoRandomTopics("gpt3").then((success) => {
+      // Actual start and goal topics
+      [start, end] = success;
+      document.querySelector("#startTopic div div div div pre").innerHTML = `Start Topic: ${start}`;
+      document.querySelector("#endTopic div div div div pre").innerHTML = `End Topic: ${end}`;
+      generateArticle(start);
+    });
+
+    if (int !== null) {
+      clearInterval(int);
+    }
+    int = setInterval(displayTimer, 10);
   });
 
-  document.getElementById('pauseTimer').addEventListener('click', function () {
-      clearInterval(int);
+  document.getElementById("pauseTimer").addEventListener("click", () => {
+    clearInterval(int);
   });
 
-  document.getElementById('resetTimer').addEventListener('click', function () {
-      clearInterval(int);
-      milliseconds = 0, seconds = 0, minutes = 0, hours = 0;
-      timerRef.innerHTML = '00 : 00 : 00 : 000 ';
+  document.getElementById("resetTimer").addEventListener("click", () => {
+    clearInterval(int);
+    [milliseconds, seconds, minutes, hours] = [0, 0, 0, 0];
+    timerRef.innerHTML = "00 : 00 : 00 : 000";
   });
 
   function displayTimer() {
-      milliseconds += 10;
-      if (milliseconds == 1000) {
-          milliseconds = 0;
-          seconds++;
-          if (seconds == 60) {
-              seconds = 0;
-              minutes++;
-              if (minutes == 60) {
-                  minutes = 0;
-                  hours++;
-              }
-          }
+    milliseconds += 10;
+    if (milliseconds == 1000) {
+      milliseconds = 0;
+      seconds++;
+      if (seconds == 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes == 60) {
+          minutes = 0;
+          hours++;
+        }
       }
-      var h = hours < 10 ? "0" + hours : hours;
-      var m = minutes < 10 ? "0" + minutes : minutes;
-      var s = seconds < 10 ? "0" + seconds : seconds;
-      var ms = milliseconds < 10 ? "00" + milliseconds : milliseconds < 100 ? "0" + milliseconds : milliseconds;
+    }
 
-      timerRef.innerHTML = h + ' : ' + m + ' : ' + s + ' : ' + ms;
+    let h = hours < 10 ? "0" + hours : hours;
+    let m = minutes < 10 ? "0" + minutes : minutes;
+    let s = seconds < 10 ? "0" + seconds : seconds;
+    let ms =
+      milliseconds < 10
+        ? "00" + milliseconds
+        : milliseconds < 100
+        ? "0" + milliseconds
+        : milliseconds;
+
+    timerRef.innerHTML = `${h} : ${m} : ${s} : ${ms}`;
   }
 
-  document.getElementById('Score').addEventListener('click', function () {
-      var score = document.querySelector('.timerDisplay').innerHTML;
-      Number1.innerHTML = '1. ' + score;
+  document.getElementById("Score").addEventListener("click", () => {
+    let score = document.querySelector(".timerDisplay").innerHTML;
+    Number1.innerHTML = `1. ${score}`;
   });
-
 
   // Peter's code
   // Create input text box
   var inputBox = document.createElement("input");
   inputBox.setAttribute("type", "text");
-  $(inputBox).on("keydown", function (e) {
-    var userInput = $("#userInput").val();
-    if (e.keyCode == 13) generateArticle(userInput); // Generate on 'enter'
+  $(inputBox).on("keydown", (e) => {
+    if (e.keyCode == 13 && currentArticle.toLowerCase().includes(userInput.toLowerCase())) {
+      let userInput = $("#userInput").val();
+      generateArticle(userInput); // Generate on 'enter'
+    } else {
+      alert("Topic not found");
+    }
   });
   inputBox.id = "userInput";
   document.body.appendChild(inputBox);
@@ -92915,7 +92936,7 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
   var genBtn = document.createElement("button");
   genBtn.innerHTML = "Generate article";
   genBtn.addEventListener("click", function () {
-    var userInput = $("#userInput").val();
+    let userInput = $("#userInput").val();
     if (currentArticle.toLowerCase().includes(userInput.toLowerCase())) {
       generateArticle(userInput);
     } else {
@@ -92924,58 +92945,31 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
   });
   document.body.appendChild(genBtn);
 
-  var start, end;
-  var articleTitle, article;
-  getTwoRandomTopics("gpt3").then((success) => {
-    // Start and goal topic section
-    var startendTitle = document.createElement("h2");
-    startendTitle.innerHTML = "Start and End Topic";
-    $("#bodyContentOuter").append(startendTitle);
-
-    // Actual start and goal topics
-    start = success[0], end = success[1];
-    var startPara = document.createElement("p");
-    var endPara = document.createElement("p");
+  /*
+  // Reset game button
+  var resetBtn = document.createElement("button");
+  resetBtn.innerHTML = "Reset";
+  resetBtn.addEventListener("click", async () => {
+    resetBtn.innerHTML = "Resetting...";
+    const topics = await getTwoRandomTopics("gpt3");
+    [start, end] = topics;
     startPara.innerHTML = `Start: ${start}`;
     endPara.innerHTML = `End: ${end}`;
-    $("#bodyContentOuter").append(startPara);
-    $("#bodyContentOuter").append(endPara);
-
-    // Start game button
-    var startBtn = document.createElement("button");
-    startBtn.innerHTML = "Start game";
-    startBtn.addEventListener("click", () => generateArticle(start));
-    $("#bodyContentOuter").append(startBtn);
-
-    // Reset game button
-    var resetBtn = document.createElement("button");
     resetBtn.innerHTML = "Reset";
-    resetBtn.addEventListener("click", async () => {
-      resetBtn.innerHTML = "Resetting..."
-      const topics = await getTwoRandomTopics("gpt3");
-      start = topics[0], end = topics[1];
-      startPara.innerHTML = `Start: ${start}`;
-      endPara.innerHTML = `End: ${end}`;
-      resetBtn.innerHTML = "Reset";
-    });
-    $("#bodyContentOuter").append(resetBtn);
-
-    // Embedded article title
-    articleTitle = document.createElement("h2");
-    articleTitle.innerHTML = "Wiki Game";
-    $("#bodyContentOuter").append(articleTitle);
-
-    // Embedded article content
-    article = document.createElement("article");
-    article.innerHTML = "Please generate an article.";
-    $("#bodyContentOuter").append(article);
   });
+  $("#bodyContentOuter").append(resetBtn);
+  */
 }
 
-// Generates a wiki article for a given topic. 
+// Generates a wiki article for a given topic.
 // Article appears on Main_Page and on its own page behind the scenes
 function generateArticle(userInput) {
-  if (userInput.toLowerCase() == end.toLowerCase()) {
+  let [inputLower, endLower] = [userInput.toLowerCase(), end.toLowerCase()];
+  let allowedMatches = [inputLower, inputLower.replace(/ *\([^)]*\) */g, "")];
+  if (
+    allowedMatches.includes(endLower) ||
+    allowedMatches.includes(endLower.replace("'s|'|s'", ""))
+  ) {
     alert("You've won");
   }
   if (userInput) {
@@ -93151,11 +93145,12 @@ async function getTwoRandomTopics(api = "gpt3") {
       temperature: 0.8,
       top_p: 1,
     });
-  
+
     const topics = response.data.choices[0].text.split(", ");
     topics[0] = topics[0].trim();
     console.log(topics);
     return topics;
   }
 }
+
 },{"openai":302,"request":349}]},{},[458]);
