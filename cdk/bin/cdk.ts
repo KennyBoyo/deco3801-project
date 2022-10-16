@@ -24,35 +24,35 @@ const app = new cdk.App();
 const defaultStackEnv = { account: process.env.ACCOUNT_ID || "507587228925", region: process.env.ACCOUNT_REGION || "us-east-1" }
 
 
-const imageRepositoryStack = new ImageRepositoryStack(
-  app,
-  'ImageRepositoryStack',
-  {
-    inputs: {
-      dockerImageFilePath,
-    },
-    outputs: {
-      ecrUriRef,
-      ecrArnRef,
-      ecrNameRef,
-    },
-    env: defaultStackEnv
-  }
-)
+// const imageRepositoryStack = new ImageRepositoryStack(
+//   app,
+//   'ImageRepositoryStack',
+//   {
+//     inputs: {
+//       dockerImageFilePath,
+//     },
+//     outputs: {
+//       ecrUriRef,
+//       ecrArnRef,
+//       ecrNameRef,
+//     },
+//     env: defaultStackEnv
+//   }
+// )
 
-const ecstack = new ECStack(app, "ECStack", {
-  inputs: {
-    ecrArnRef,
-    ecrNameRef,
-    dockerImageFilePath,
-  },
-  outputs: {
-    vpcIdRef
-  },
-  env: defaultStackEnv
-})
+// const ecstack = new ECStack(app, "ECStack", {
+//   inputs: {
+//     ecrArnRef,
+//     ecrNameRef,
+//     dockerImageFilePath,
+//   },
+//   outputs: {
+//     vpcIdRef
+//   },
+//   env: defaultStackEnv
+// })
 
-ecstack.addDependency(imageRepositoryStack)
+// ecstack.addDependency(imageRepositoryStack)
 
 const datastack = new DataStack(app, "DataStack", {
   inputs: {
