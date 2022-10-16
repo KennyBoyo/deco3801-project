@@ -8,11 +8,65 @@ var configuration = new Configuration({
 var openai = new OpenAIApi(configuration);
 var request = require("request").defaults({ jar: true });
 
-var url = "http://ec2-3-235-101-167.compute-1.amazonaws.com/api.php";
+var wikiBase = "http://ec2-3-235-101-167.compute-1.amazonaws.com";
+var wikiApi = `${wikiBase}/api.php`;
 var currentArticle = "";
 
 // Game is on main page
-if ($("#firstHeading")[0].innerHTML == "Main Page") {
+if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
+
+  // Ivan's stopwatch code
+  var milliseconds = 0, seconds = 0, minutes = 0, hours = 0;
+  var int = null;
+  var timerRef = document.querySelector('.timerDisplay');
+  var Number1 = document.querySelector('#no1');
+      
+  document.getElementById('startTimer').addEventListener('click', function () {
+      if (int !== null) {
+          clearInterval(int);
+      }
+      int = setInterval(displayTimer, 10);
+  });
+
+  document.getElementById('pauseTimer').addEventListener('click', function () {
+      clearInterval(int);
+  });
+
+  document.getElementById('resetTimer').addEventListener('click', function () {
+      clearInterval(int);
+      milliseconds = 0, seconds = 0, minutes = 0, hours = 0;
+      timerRef.innerHTML = '00 : 00 : 00 : 000 ';
+  });
+
+  function displayTimer() {
+      milliseconds += 10;
+      if (milliseconds == 1000) {
+          milliseconds = 0;
+          seconds++;
+          if (seconds == 60) {
+              seconds = 0;
+              minutes++;
+              if (minutes == 60) {
+                  minutes = 0;
+                  hours++;
+              }
+          }
+      }
+      var h = hours < 10 ? "0" + hours : hours;
+      var m = minutes < 10 ? "0" + minutes : minutes;
+      var s = seconds < 10 ? "0" + seconds : seconds;
+      var ms = milliseconds < 10 ? "00" + milliseconds : milliseconds < 100 ? "0" + milliseconds : milliseconds;
+
+      timerRef.innerHTML = h + ' : ' + m + ' : ' + s + ' : ' + ms;
+  }
+
+  document.getElementById('Score').addEventListener('click', function () {
+      var score = document.querySelector('.timerDisplay').innerHTML;
+      Number1.innerHTML = '1. ' + score;
+  });
+
+
+  // Peter's code
   // Create input text box
   var inputBox = document.createElement("input");
   inputBox.setAttribute("type", "text");
@@ -155,7 +209,7 @@ function getLoginToken(userInput) {
     format: "json",
   };
 
-  request.get({ url: url, qs: params_0 }, function (error, res, body) {
+  request.get({ url: wikiApi, qs: params_0 }, function (error, res, body) {
     if (error) {
       return;
     }
@@ -177,7 +231,7 @@ function loginRequest(login_token, userInput) {
     format: "json",
   };
 
-  request.post({ url: url, form: params_1 }, function (error, res, body) {
+  request.post({ url: wikiApi, form: params_1 }, function (error, res, body) {
     if (error) {
       return;
     }
@@ -193,7 +247,7 @@ function getCsrfToken(userInput) {
     format: "json",
   };
 
-  request.get({ url: url, qs: params_2 }, function (error, res, body) {
+  request.get({ url: wikiApi, qs: params_2 }, function (error, res, body) {
     if (error) {
       return;
     }
@@ -213,7 +267,7 @@ async function editRequest(csrf_token, userInput) {
     format: "json",
   };
 
-  request.post({ url: url, form: params_3 }, function (error, res, body) {
+  request.post({ url: wikiApi, form: params_3 }, function (error, res, body) {
     if (error) {
       return;
     }
