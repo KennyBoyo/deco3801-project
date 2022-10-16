@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # update bundle.js
-sudo cp ./src/docker/bundle.js /var/www/html/mediawiki
+sudo cp ./src/scripts/bundle.js /var/www/html/mediawiki
 
 # update nginx config
 sudo cp ./src/scripts/mediawiki /etc/nginx/sites-available
