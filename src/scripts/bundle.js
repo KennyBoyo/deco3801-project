@@ -92846,14 +92846,17 @@ const wikiBase = "http://ec2-3-235-101-167.compute-1.amazonaws.com";
 const wikiApi = `${wikiBase}/api.php`;
 let currentArticle = "";
 let start, end;
+let int = null;
+let timerRef = document.querySelector(".timerDisplay");
+let timeLeader = document.getElementById("no1");
 
 // Game is on main page
 if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
+  // To fit AI-generated text
+  document.getElementById("mw-content-text").style.overflow = "scroll";
+
   // Ivan's stopwatch code
   let [milliseconds, seconds, minutes, hours] = [0, 0, 0, 0];
-  let int = null;
-  let timerRef = document.querySelector(".timerDisplay");
-  let Number1 = document.querySelector("#no1");
 
   // Embedded article title
   articleTitle = document.getElementById("articleTitle");
@@ -92914,8 +92917,8 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
   }
 
   document.getElementById("Score").addEventListener("click", () => {
-    let score = document.querySelector(".timerDisplay").innerHTML;
-    Number1.innerHTML = `1. ${score}`;
+    let score = timerRef.innerHTML;
+    timeLeader.innerHTML = `1. ${score}`;
   });
 
   // Peter's code
@@ -92927,10 +92930,12 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
   inputBox.setAttribute("type", "text");
   $(inputBox).on("keydown", (e) => {
     let userInput = $("#userInput").val();
-    if (e.keyCode == 13 && currentArticle.toLowerCase().includes(userInput.toLowerCase())) {
-      generateArticle(userInput); // Generate on 'enter'
-    } else {
-      alert("Topic not found");
+    if (e.keyCode == 13) {
+      if (currentArticle.toLowerCase().includes(userInput.toLowerCase())) {
+        generateArticle(userInput); // Generate on 'enter'
+      } else {
+        alert("Topic not found");
+      }
     }
   });
   inputBox.id = "userInput";
@@ -92975,6 +92980,8 @@ function generateArticle(userInput) {
     allowedMatches.includes(endLower.replace("'s|'|s'", ""))
   ) {
     alert("You've won");
+    clearInterval(int);
+    timeLeader.innerHTML = `1. ${timerRef.innerHTML}`;
   }
   if (userInput) {
     articleTitle.innerHTML = "Loading...";
