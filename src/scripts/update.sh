@@ -11,6 +11,7 @@ sudo ln -sf /etc/nginx/sites-available/mediawiki /etc/nginx/sites-enabled/mediaw
 sudo cp ./src/scripts/php.ini /etc/php/7.4/fpm/php.ini
 
 # update LocalSettings.php
+sudo cp ./src/scripts/logo.png /var/www/html/mediawiki/
 sudo cp ./src/scripts/LocalSettings.php /var/www/html/mediawiki
 
 # restart processes for update

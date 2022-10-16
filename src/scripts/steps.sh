@@ -46,7 +46,7 @@ sudo chown -R www-data:www-data /var/www/html/
 sudo chmod -R 755 /var/www/html/
 sudo chown -R www-data:www-data /var/www/html/mediawiki
 
-sudo cp ./src/docker/LocalSettings-ubuntu-final.php /var/www/html/mediawiki/LocalSettings.php
+sudo cp ./src/scripts/LocalSettings.php /var/www/html/mediawiki/LocalSettings.php
 sudo chown www-data:www-data /var/www/html/mediawiki/LocalSettings.php
 sudo systemctl restart nginx
 
