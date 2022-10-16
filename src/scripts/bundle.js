@@ -92926,8 +92926,8 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
   var inputBox = document.createElement("input");
   inputBox.setAttribute("type", "text");
   $(inputBox).on("keydown", (e) => {
+    let userInput = $("#userInput").val();
     if (e.keyCode == 13 && currentArticle.toLowerCase().includes(userInput.toLowerCase())) {
-      let userInput = $("#userInput").val();
       generateArticle(userInput); // Generate on 'enter'
     } else {
       alert("Topic not found");
