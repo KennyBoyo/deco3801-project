@@ -32,12 +32,13 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
       document.querySelector("#startTopic div div div div pre").innerHTML = `Start Topic: ${start}`;
       document.querySelector("#endTopic div div div div pre").innerHTML = `End Topic: ${end}`;
       generateArticle(start);
-    });
 
-    if (int !== null) {
-      clearInterval(int);
-    }
-    int = setInterval(displayTimer, 10);
+      // Stopwatch
+      if (int !== null) {
+        clearInterval(int);
+      }
+      int = setInterval(displayTimer, 10);
+    });
   });
 
   document.getElementById("pauseTimer").addEventListener("click", () => {
@@ -84,6 +85,9 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
   });
 
   // Peter's code
+  const inputArea = document.querySelector(".inputs");
+  inputArea.style.display = "flex";
+
   // Create input text box
   var inputBox = document.createElement("input");
   inputBox.setAttribute("type", "text");
@@ -96,7 +100,7 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
     }
   });
   inputBox.id = "userInput";
-  document.body.appendChild(inputBox);
+  inputArea.appendChild(inputBox);
 
   // Create button to submit user input to GPT-3 and create page
   var genBtn = document.createElement("button");
@@ -109,7 +113,7 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
       alert("Topic not found");
     }
   });
-  document.body.appendChild(genBtn);
+  inputArea.appendChild(genBtn);
 
   /*
   // Reset game button
