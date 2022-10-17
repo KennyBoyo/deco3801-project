@@ -92937,7 +92937,7 @@ if (window.location.href == `${wikiBase}/index.php?title=Main_Page`) {
 
   // Create button to submit user input to GPT-3 and create page
   var genBtn = document.createElement("button");
-  genBtn.innerHTML = "Generate article";
+  genBtn.innerHTML = "Search in Generated Text";
   genBtn.addEventListener("click", function () {
     let userInput = $("#userInput").val();
     if (currentArticle.toLowerCase().includes(userInput.toLowerCase())) {
