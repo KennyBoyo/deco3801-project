@@ -92976,6 +92976,8 @@ async function generateArticle(userInput) {
     alert("You've won");
     clearInterval(int);
     timeLeader.innerHTML = `1. ${timerRef.innerHTML}`;
+    [milliseconds, seconds, minutes, hours] = [0, 0, 0, 0];
+    timerRef.innerHTML = "00 : 00 : 00 : 000";
   }
   if (userInput) {
     const response = await fetch(
