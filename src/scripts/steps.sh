@@ -49,7 +49,3 @@ sudo chown -R www-data:www-data /var/www/html/mediawiki
 sudo cp ./src/scripts/LocalSettings.php /var/www/html/mediawiki/LocalSettings.php
 sudo chown www-data:www-data /var/www/html/mediawiki/LocalSettings.php
 sudo systemctl restart nginx
-
-# ln -sf /etc/nginx/sites-available/ec2-44-211-47-215.compute-1.amazonaws.com.conf /etc/nginx/sites-enabled/ec2-44-211-47-215.compute-1.amazonaws.com.conf
-
-# server_name ec2-44-211-47-215.compute-1.amazonaws.com ec2-44-211-47-215.compute-1.amazonaws.com;

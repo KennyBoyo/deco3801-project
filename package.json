@@ -6,7 +6,8 @@
   },
   "scripts": {
     "create-bundle": "yarn browserify ./src/js/mediawiki-commonjs.js -o ./src/scripts/bundle.js",
-    "deploy": "cdk deploy -all --require-approval never",
+    "deploy-docker": "cdk deploy ImageRepositoryStack --require-approval never && cdk deploy ECStack --require-approval never",
+    "deploy-data": "cdk deploy DataStack --require-approval never",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
