@@ -1,0 +1,41 @@
+{
+  "name": "cdk",
+  "version": "0.1.0",
+  "bin": {
+    "cdk": "bin/cdk.js"
+  },
+  "scripts": {
+    "create-bundle": "yarn browserify ./src/js/mediawiki-commonjs.js -o ./src/scripts/bundle.js",
+    "deploy-docker": "cdk deploy ImageRepositoryStack --require-approval never && cdk deploy ECStack --require-approval never",
+    "deploy-data": "cdk deploy DataStack --require-approval never",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.18.9",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^18.7.15",
+    "@types/prettier": "2.6.0",
+    "aws-cdk": "2.40.0",
+    "eslint": "^8.23.0",
+    "jest": "^27.5.1",
+    "prettier": "^2.7.1",
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.9.1",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "all": "^0.0.0",
+    "aws-cdk-lib": "^2.40.0",
+    "browserify": "^17.0.0",
+    "cdk-ecr-deployment": "^2.5.6",
+    "constructs": "^10.1.95",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.23.0",
+    "openai": "^3.0.0",
+    "request": "^2.88.2",
+    "source-map-support": "^0.5.21"
+  }
+}

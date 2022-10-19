@@ -1,0 +1,39 @@
+server {
+    listen 80;
+    listen [::]:80;
+    root /var/www/html/mediawiki;
+    index  index.php index.html index.htm;
+    add_header Access-Control-Allow-Origin *;
+    add_header Access-Control-Allow-Origin http://aiexressed.xyz;
+    add_header Access-Control-Allow-Origin aiexressed.xyz;
+    add_header Access-Control-Allow-Origin http://ec2-3-235-101-167.compute-1.amazonaws.com;
+    add_header Access-Control-Allow-Origin ec2-3-235-101-167.compute-1.amazonaws.com;
+
+    server_name  aiexressed.xyz www.aiexpressed.xyz;
+
+    location ~ \.ht {
+                deny all;
+        }
+
+        location / {
+                try_files $uri $uri/ @rewrite;
+        }
+
+        location @rewrite {
+                rewrite ^/(.*)$ /index.php;
+        }
+
+        location ^~ /maintenance/ {
+                return 403;
+        }
+
+    location ~ [^/]\.php(/|$) {
+    fastcgi_split_path_info  ^(.+?\.php)(|/.*)$;
+    fastcgi_index            index.php;
+    fastcgi_pass             unix:/var/run/php/php7.4-fpm.sock; # for Ubuntu 18.04
+    include                  fastcgi_params;
+    fastcgi_param   PATH_INFO       $fastcgi_path_info;
+    fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    try_files $uri @rewrite;
+    }
+}
