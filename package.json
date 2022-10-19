@@ -32,6 +32,7 @@
     "browserify": "^17.0.0",
     "cdk-ecr-deployment": "^2.5.6",
     "constructs": "^10.1.95",
+    "dotenv": "^16.0.3",
     "eslint": "^8.23.0",
     "openai": "^3.0.0",
     "request": "^2.88.2",

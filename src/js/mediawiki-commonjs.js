@@ -1,9 +1,10 @@
-/* Project code */
+/* Project code */compute
 
 // Imports
 const { Configuration, OpenAIApi } = require("openai");
+require('dotenv').config();
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey:  "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",
 });
 const openai = new OpenAIApi(configuration);
 const request = require("request").defaults({ jar: true });
